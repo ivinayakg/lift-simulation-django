@@ -15,8 +15,10 @@ def createSession(request):
             "total_floors": request.data.get("floors")
         }
         session = SessionSerializer(data=data).create()
+        if not session:
+            raise Exception("Invalid data")
         session.save()
-        response = JsonResponse({"message": "Hello world"})
+        response = JsonResponse({"message": "succesfully created"})
         response.set_cookie(env("COOKIE_NAME"), session.id,
                             expires=int(env("COOKIE_AGE")), httponly=True)
         return response
