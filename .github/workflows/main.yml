@@ -13,6 +13,11 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.9]
+        
+    env:
+      COOKIE_NAME: Hello
+      COOKIE_AGE : 1110000
+      SECRET_KEY : 123456789
 
     steps:
       - uses: actions/checkout@v3
