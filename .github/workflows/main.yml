@@ -13,11 +13,6 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.9]
-        
-    env:
-      COOKIE_NAME: Hello
-      COOKIE_AGE : 1110000
-      SECRET_KEY : 123456789
 
     steps:
       - uses: actions/checkout@v3
@@ -30,5 +25,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Tests
+        env:
+         COOKIE_NAME: Hello
+         COOKIE_AGE : 1110000
+         SECRET_KEY : 123456789
         run: |
           python src/manage.py test
