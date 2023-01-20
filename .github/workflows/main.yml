@@ -25,9 +25,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Tests
+        run: python src/manage.py test
         env:
          COOKIE_NAME: Hello
          COOKIE_AGE : 1110000
          SECRET_KEY : 123456789
-        run: |
-          python src/manage.py test
