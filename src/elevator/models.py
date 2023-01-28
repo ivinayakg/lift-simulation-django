@@ -19,10 +19,13 @@ class Session(models.Model):
     def generateSessionID(cls):
         return binascii.hexlify(os.urandom(20)).decode()
 
-    def get_all_lifts(self):
+    def get_all_elevators(self, query):
+        if (query):
+            return self.elevator_set.filter(**query)
+
         return self.elevator_set.all()
 
-    def get_all_lifts_requests(self, query, sort=[]):
+    def get_all_elevators_requests(self, query, sort=[]):
         query_set = self.elevatorrequest_set.order_by(*sort)
         if (query.get('completed')):
             elevator_request_completed_filter = elevator_request_completed[query["completed"]]
@@ -32,23 +35,11 @@ class Session(models.Model):
 
 
 class Elevator(models.Model):
-    DIRECTION_CHOICES = [("UP", "Up"), ("DOWN", "Down")]
-    GATES_OF_LIFT_CHOICES = [("OPEN", "Open"), ("CLOSE", "Close")]
-    STATUS_OF_LIFT_CHOICES = [
-        ("WORKING", "Working"), ("REPAIRING", "Repairing")]
-
     curr_floor = models.IntegerField(default=0)
-    direction = models.CharField(
-        max_length=10, choices=DIRECTION_CHOICES, default="UP")
-    status = models.CharField(
-        max_length=10, choices=STATUS_OF_LIFT_CHOICES, default="WORKING")
-    gates = models.CharField(
-        max_length=10, choices=GATES_OF_LIFT_CHOICES, default="CLOSE")
-    moving = models.BooleanField(default=False)
+    direction = models.CharField(max_length=30)
+    status = models.CharField(max_length=30)
+    gates = models.CharField(max_length=30)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-
-    def is_moving(self):
-        return self.moving
 
 
 class ElevatorRequest(models.Model):

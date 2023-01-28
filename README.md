@@ -1,1 +1,1 @@
-# lift-simulation-django
+# elevator-simulation-django
