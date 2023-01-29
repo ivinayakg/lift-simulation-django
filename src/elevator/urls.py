@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from elevator.views import createSession, checkSession, createElevatorRequest, getAllElevatorRequest, getLatestElevatorRequests, getElevatorData, changeElevatorData, getAllElevatorData
+from elevator.views import createSession, checkSession, createElevatorRequest, getAllElevatorRequests, getLatestElevatorRequest, getElevatorData, updateElevatorData, getAllElevatorsData
 from elevator.middleware import getCookieMiddleware, middlewareWrapper
 
 urlpatterns = [
@@ -8,13 +8,13 @@ urlpatterns = [
     path('request', middlewareWrapper(
         getCookieMiddleware, view=createElevatorRequest)),
     path('request/all', middlewareWrapper(getCookieMiddleware,
-         view=getAllElevatorRequest)),
+         view=getAllElevatorRequests)),
     path('request/latest', middlewareWrapper(getCookieMiddleware,
-         view=getLatestElevatorRequests)),
+         view=getLatestElevatorRequest)),
     path('elevator/all',
-         middlewareWrapper(getCookieMiddleware, view=getAllElevatorData)),
+         middlewareWrapper(getCookieMiddleware, view=getAllElevatorsData)),
     path('elevator/<int:id>/update',
-         middlewareWrapper(getCookieMiddleware, view=changeElevatorData)),
+         middlewareWrapper(getCookieMiddleware, view=updateElevatorData)),
     re_path(r'^elevator/(?P<id>\d+)(/(?P<key>\w+))?/$',
             middlewareWrapper(getCookieMiddleware, view=getElevatorData)),
 ]

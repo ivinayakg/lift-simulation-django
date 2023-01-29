@@ -16,8 +16,14 @@ class SessionSerializer(serializers.ModelSerializer):
         validated_data = self.validated_data
         session = Session(**validated_data)
         session.save()
-        session_data = {"id": session.id, **self.data}
-        return {"instance": session, "data": session_data}
+        self.instance = session
+        return self
+
+    @property
+    def data(self):
+        _data = super().data
+        _data['id'] = self.instance.id
+        return _data
 
 
 class ElevatorRequestSerializer(serializers.ModelSerializer):
@@ -32,8 +38,14 @@ class ElevatorRequestSerializer(serializers.ModelSerializer):
         validated_data = self.validated_data
         elevator_request = ElevatorRequest(**validated_data)
         elevator_request.save()
-        elevator_request_data = {"id": elevator_request.id, **self.data}
-        return {"instance": elevator_request, "data": elevator_request_data}
+        self.instance = elevator_request
+        return self
+
+    @property
+    def data(self):
+        _data = super().data
+        _data['id'] = self.instance.id
+        return _data
 
 
 class ElevatorSerializer(serializers.ModelSerializer):
@@ -64,29 +76,29 @@ class ElevatorSerializer(serializers.ModelSerializer):
         validated_data = self.validated_data
         elevator = Elevator(**validated_data)
         elevator.save()
-        elevator_data = {"id": elevator.id, **self.data}
-        return {"instance": elevator, "data": elevator_data}
+        self.instance = elevator
+        return self
 
     def update(self):
-        if elevator_gates_choices.has(self.initial_data.get('gates')):
-            self.initial_data['gates'] = self.initial_data.get(
-                'gates', self.instance.gates)
+        if not elevator_gates_choices.has(self.initial_data.get('gates')):
+            self.initial_data['gates'] = self.instance.gates
 
-        if elevator_direction_choices.has(self.initial_data.get('direction')):
-            self.initial_data['direction'] = self.initial_data.get(
-                'direction', self.instance.direction)
+        if not elevator_direction_choices.has(self.initial_data.get('direction')):
+            self.initial_data['direction'] = self.instance.direction
 
-        if elevator_status_choices.has(self.initial_data.get('status')):
-            self.initial_data['status'] = self.initial_data.get(
-                'status', self.instance.status)
+        if not elevator_status_choices.has(self.initial_data.get('status')):
+            self.initial_data['status'] = self.instance.status
 
-        if self.initial_data.get('curr_floor'):
-            self.initial_data['curr_floor'] = int(
-                self.initial_data.get('curr_floor'))
-        else:
+        if not self.initial_data.get('curr_floor') or self.initial_data.get('curr_floor') < 0 or self.initial_data.get('curr_floor') > self.instance.session.total_floors:
             self.initial_data['curr_floor'] = self.instance.curr_floor
 
         if not self.is_valid():
             raise Exception("Something went wrong")
 
         return super().update(self.instance, self.validated_data)
+
+    @property
+    def data(self):
+        _data = super().data
+        _data['id'] = self.instance.id
+        return _data
