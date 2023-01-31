@@ -30,5 +30,8 @@ def middlewareWrapper(*middlewares, view):
                 state = result
             return view(state["request"], *state["args"], **state["kwargs"])
         except Exception as e:
-            return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+            response = JsonResponse(
+                {"message": "Something Went Wrong", "error": e.args[0]})
+            response.status_code = 500
+            return response
     return main

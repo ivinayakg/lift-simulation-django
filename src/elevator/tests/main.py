@@ -59,6 +59,7 @@ class CreateSessionTest(ElevatorAppTests):
     def test_create_session_without_data(self):
         _request = self.factory.post('api/initiate', format='json')
         _response = createSession(_request)
+        self.assertEqual(_response.status_code, 500)
         self.assertJSONEqual(
             _response.content, {"message": "Something Went Wrong", "error": "Invalid data"})
 
@@ -71,6 +72,8 @@ class CreateSessionTest(ElevatorAppTests):
             'api/initiate', data=request_data, format='json')
         _response = createSession(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertTrue(len(_response_data["session"]["id"]) != 0)
         self.assertEqual(
             _response_data["session"]["total_elevators"], request_data["elevators"])
@@ -86,6 +89,7 @@ class CreateSessionTest(ElevatorAppTests):
         _response = createSession(_request)
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data["session"]["id"], self.session['id'])
         self.assertEqual(
             _response_data["session"]["total_elevators"], self.session['total_elevators'])
@@ -98,6 +102,8 @@ class CheckSessionTest(ElevatorAppTests):
         _request = self.factory.get('api',  format='json')
         _response = middlewareWrapper(
             getCookieMiddleware, view=checkSession)(_request)
+
+        self.assertEqual(_response.status_code, 500)
         self.assertJSONEqual(
             _response.content, {"message": "Something Went Wrong", "error": "Cookie invalid or doesn't exists"})
 
@@ -107,6 +113,8 @@ class CheckSessionTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=checkSession)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data["session"]["id"], self.session['id'])
         self.assertEqual(
             _response_data["session"]["total_elevators"], self.session['total_elevators'])
@@ -126,6 +134,8 @@ class CreateElevatorRequestTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=createElevatorRequest)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertTrue(_response_data["elevator_request"]['id'])
         self.assertEqual(
             _response_data["elevator_request"]['session'], self.session['id'])
@@ -144,6 +154,8 @@ class CreateElevatorRequestTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=createElevatorRequest)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 500)
         self.assertEqual(_response_data["error"], 'Invalid data')
         self.assertEqual(_response_data["message"], 'Something Went Wrong')
 
@@ -157,6 +169,8 @@ class CreateElevatorRequestTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=createElevatorRequest)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 500)
         self.assertEqual(
             _response_data["error"], f'Floor range is 1-{self.session["total_floors"]}')
         self.assertEqual(_response_data["message"], 'Something Went Wrong')
@@ -171,6 +185,8 @@ class GetAllElevatorRequestsTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=getAllElevatorRequests)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data["message"], "success")
         self.assertTrue(
             len(_response_data["elevator_requests"]), len(self.elevator_requests))
@@ -182,6 +198,8 @@ class GetAllElevatorRequestsTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=getAllElevatorRequests)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data["message"], "success")
         self.assertTrue(len(_response_data["elevator_requests"]) > 0)
         for request in _response_data["elevator_requests"]:
@@ -193,6 +211,8 @@ class GetAllElevatorRequestsTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=getAllElevatorRequests)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data["message"], "success")
         self.assertListEqual(_response_data["elevator_requests"], [])
 
@@ -206,6 +226,8 @@ class GetLatestElevatorRequestTest(ElevatorAppTests):
         _response = middlewareWrapper(
             getCookieMiddleware, view=getLatestElevatorRequest)(_request)
         _response_data = JSONParse(_response.content)
+
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertDictEqual(
             _response_data['elevator_request'], self.elevator_requests[len(self.elevator_requests) - 1])
@@ -223,6 +245,7 @@ class GetElevatorData(ElevatorAppTests):
             getCookieMiddleware, view=getElevatorData)(_request, id=self.elevator_instance["id"])
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertDictEqual(
             _response_data['elevator'], self.elevator_instance)
@@ -235,6 +258,7 @@ class GetElevatorData(ElevatorAppTests):
             getCookieMiddleware, view=getElevatorData)(_request, id=self.elevator_instance["id"], key=key)
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertEqual(
             _response_data[f'elevator_{key}'], self.elevator_instance[key])
@@ -245,6 +269,7 @@ class GetElevatorData(ElevatorAppTests):
             getCookieMiddleware, view=getElevatorData)(_request)
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 500)
         self.assertEqual(_response_data['message'], 'Something Went Wrong')
         self.assertEqual(_response_data['error'], 'Pass valid elevator id')
 
@@ -272,6 +297,7 @@ class GetAllElevatorsData(ElevatorAppTests):
             getCookieMiddleware, view=getAllElevatorsData)(_request)
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertListEqual(_response_data['elevators'], self.elevators)
 
@@ -282,6 +308,7 @@ class GetAllElevatorsData(ElevatorAppTests):
             getCookieMiddleware, view=getAllElevatorsData)(_request)
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertDictEqual(
             _response_data['elevators'][0], self.elevator_instance)
@@ -296,6 +323,7 @@ class GetAllElevatorsData(ElevatorAppTests):
 
         filtered_elevators = [x for x in self.elevators if x['gates'] == gates]
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertListEqual(_response_data['elevators'], filtered_elevators)
 
@@ -316,6 +344,7 @@ class UpdateElevatorData(ElevatorAppTests):
             getCookieMiddleware, view=updateElevatorData)(_request, id=self.elevator_instance["id"])
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertDictEqual(_response_data['elevator'], {
                              **self.elevator_instance, **_request_data})
@@ -331,6 +360,7 @@ class UpdateElevatorData(ElevatorAppTests):
             getCookieMiddleware, view=updateElevatorData)(_request, id=self.elevator_instance["id"])
         _response_data = JSONParse(_response.content)
 
+        self.assertEqual(_response.status_code, 200)
         self.assertEqual(_response_data['message'], 'success')
         self.assertDictEqual(
             _response_data['elevator'], self.elevator_instance)

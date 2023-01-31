@@ -36,7 +36,10 @@ def createSession(request):
                             expires=int(env("COOKIE_AGE")), httponly=True)
         return response
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view()
@@ -47,7 +50,10 @@ def checkSession(request, cookie):
         session_serialized = SessionSerializer(session)
         return JsonResponse({"message": "success", "session": session_serialized.data})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view(["POST"])
@@ -68,7 +74,10 @@ def createElevatorRequest(request, cookie):
 
         return JsonResponse({"message": "success", "elevator_request": elevator_request.data})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view()
@@ -82,7 +91,10 @@ def getAllElevatorRequests(request, cookie):
             ElevatorRequestSerializer(x).data for x in elevator_request_all]
         return JsonResponse({"message": "success", "elevator_requests": elevator_request_all_serialized})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view()
@@ -98,7 +110,10 @@ def getLatestElevatorRequest(request, cookie):
             elevator_request_latest).data
         return JsonResponse({"message": "success", "elevator_request": elevator_request_latest_serialized})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view()
@@ -118,7 +133,10 @@ def getElevatorData(request, cookie, id=None, key='all'):
         else:
             return JsonResponse({"message": "success", f'elevator_{key}': elevator_serialized_data[key]})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view()
@@ -135,7 +153,10 @@ def getAllElevatorsData(request, cookie):
             instance=x).data for x in elevator]
         return JsonResponse({"message": "success", "elevators": elevator_serialized_data})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
 
 
 @api_view(["PATCH"])
@@ -160,4 +181,7 @@ def updateElevatorData(request, cookie, id):
         elevator_serialized.update()
         return JsonResponse({"message": "success", "elevator": elevator_serialized.data})
     except Exception as e:
-        return JsonResponse({"message": "Something Went Wrong", "error": e.args[0]})
+        response = JsonResponse(
+            {"message": "Something Went Wrong", "error": e.args[0]})
+        response.status_code = 500
+        return response
