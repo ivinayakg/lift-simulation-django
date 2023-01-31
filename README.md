@@ -15,7 +15,7 @@
 
 ## API-Contracts
 
-- The API contracts are here as follows [here]()
+- The API contracts are here as follows [here](https://github.com/ivinayakg/lift-simulation-django/blob/main/contracts/contracts.md)
 
 ## APIs Provided
 
