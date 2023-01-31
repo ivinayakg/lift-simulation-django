@@ -15,6 +15,6 @@ urlpatterns = [
          middlewareWrapper(getCookieMiddleware, view=getAllElevatorsData)),
     path('elevator/<int:id>/update',
          middlewareWrapper(getCookieMiddleware, view=updateElevatorData)),
-    re_path(r'^elevator/(?P<id>\d+)(/(?P<key>\w+))?/$',
+    re_path(r'^elevator/(?P<id>\w+)(/(?P<key>\w+))?/$',
             middlewareWrapper(getCookieMiddleware, view=getElevatorData)),
 ]
