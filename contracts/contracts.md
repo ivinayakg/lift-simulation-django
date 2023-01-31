@@ -1,4 +1,5 @@
 # Entity Relationship Diagram
+  ![LIFT Simulation UML - Page 3 (1)](https://user-images.githubusercontent.com/73058928/215698340-15bff0f3-758d-48b3-a8d3-9d1dc757e36c.png)
 
 ## **Requests**
 
