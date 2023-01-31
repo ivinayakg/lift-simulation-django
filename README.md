@@ -32,5 +32,6 @@
 
 ## Tests
 
+- Change your directory to the `src` file
 - All APIs are covered with tests(+ edge cases)
 - To run tests Run `python manage.py test` or `python manage.py test elevator`
