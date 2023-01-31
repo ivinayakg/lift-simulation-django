@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "c976c7c3-40be-4a21-9f9e-f87c0d519f71",
+		"name": "Django Lift Simulation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13355319"
+	},
+	"item": [
+		{
+			"name": "Create Session",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"elevators\" : 10,\r\n    \"floors\" : 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}api/initiate",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"initiate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Session",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api",
+					"host": [
+						"{{baseurl}}api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Elevator Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"destination\": 0,\r\n    \"elevator\": \"<elevator_id>\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}api/request",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Elevator Requests",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api/request/all",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"request",
+						"all"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "elevator",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "destination",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "completed",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Latest Elevator Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api/request/latest",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"request",
+						"latest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Elevator",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api/elevator/all",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"elevator",
+						"all"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "curr_floor",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "gates",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "direction",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Elevator Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api/elevator/:id/:key",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"elevator",
+						":id",
+						":key"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						},
+						{
+							"key": "key",
+							"value": "all"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Elevator Data",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}api/elevator/:id/update",
+					"host": [
+						"{{baseurl}}api"
+					],
+					"path": [
+						"elevator",
+						":id",
+						"update"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "http://127.0.0.1:8000/",
+			"type": "string"
+		}
+	]
+}
