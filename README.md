@@ -13,8 +13,12 @@
 - Run `python manage.py runserver`
 - Done.
 
-## API-Contracts
+## Details
 
+- Every Data model has their own serilizer which works as the bridge between the model layer and the REST API.
+- Things like validating cookies has been done using middleware and a custom middleware wrapper is also constructed for the same thing.
+- Using `django rest framework` as I had prior experience with that.
+- Most important writing tests for all the APIs for a fluent development as well as making it easy for future refactor.
 - The API contracts are here as follows [here](https://github.com/ivinayakg/lift-simulation-django/blob/main/contracts/contracts.md)
 
 ## APIs Provided
