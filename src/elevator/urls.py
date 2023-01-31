@@ -13,7 +13,7 @@ urlpatterns = [
          view=getLatestElevatorRequest)),
     path('elevator/all',
          middlewareWrapper(getCookieMiddleware, view=getAllElevatorsData)),
-    path('elevator/<int:id>/update',
+    path('elevator/<str:id>/update',
          middlewareWrapper(getCookieMiddleware, view=updateElevatorData)),
     re_path(r'^elevator/(?P<id>\w+)(/(?P<key>\w+))?/$',
             middlewareWrapper(getCookieMiddleware, view=getElevatorData)),
